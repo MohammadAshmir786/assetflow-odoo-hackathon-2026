@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('../config/env');
 const User = require('../models/User');
+const { ROLES } = require('../utils/constants');
 
 const seedUsers = async () => {
   try {
@@ -14,31 +15,31 @@ const seedUsers = async () => {
     await User.deleteMany();
     console.log('Existing users cleared.');
 
-    // Define users data
+    // Define users data using constants
     const users = [
       {
         name: 'Admin User',
         email: 'admin@assetflow.demo',
         password: 'Demo@123',
-        role: 'admin',
+        role: ROLES.ADMIN,
       },
       {
         name: 'Asset Manager',
         email: 'manager@assetflow.demo',
         password: 'Demo@123',
-        role: 'asset_manager',
+        role: ROLES.MANAGER,
       },
       {
         name: 'Employee One',
         email: 'employee1@assetflow.demo',
         password: 'Demo@123',
-        role: 'employee',
+        role: ROLES.EMPLOYEE,
       },
       {
         name: 'Employee Two',
         email: 'employee2@assetflow.demo',
         password: 'Demo@123',
-        role: 'employee',
+        role: ROLES.EMPLOYEE,
       },
     ];
 

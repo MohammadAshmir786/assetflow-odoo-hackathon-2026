@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ACTIVITY_ACTION } = require('../utils/constants');
 
 const activitySchema = new mongoose.Schema(
   {
@@ -6,6 +7,7 @@ const activitySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Asset',
       required: [true, 'Activity must be linked to an asset'],
+      index: true, // Index for asset lookup
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -15,7 +17,7 @@ const activitySchema = new mongoose.Schema(
     action: {
       type: String,
       enum: {
-        values: ['Allocation', 'Return', 'Status Change', 'Creation'],
+        values: Object.values(ACTIVITY_ACTION),
         message: '{VALUE} is not a valid action',
       },
       required: [true, 'Activity action is required'],
@@ -27,10 +29,11 @@ const activitySchema = new mongoose.Schema(
     timestamp: {
       type: Date,
       default: Date.now,
+      index: -1, // Descending index for fast recent activities lookups
     },
   },
   {
-    timestamps: false, // We use timestamp field explicitly
+    timestamps: false,
   }
 );
 

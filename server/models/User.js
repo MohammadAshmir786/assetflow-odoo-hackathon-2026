@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/env');
+const { ROLES } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema(
   {
@@ -30,10 +31,10 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: {
-        values: ['admin', 'asset_manager', 'employee'],
+        values: Object.values(ROLES),
         message: '{VALUE} is not a valid role',
       },
-      default: 'employee',
+      default: ROLES.EMPLOYEE,
     },
   },
   {

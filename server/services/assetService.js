@@ -2,6 +2,7 @@ const Asset = require('../models/Asset');
 const User = require('../models/User');
 const Activity = require('../models/Activity');
 const ApiError = require('../utils/ApiError');
+const { ASSET_STATUS, ACTIVITY_ACTION } = require('../utils/constants');
 
 /**
  * Allocate an asset to a user
@@ -24,10 +25,10 @@ const allocateAsset = async (assetId, userId, expectedReturnDate, operatorId) =>
   }
 
   // Validate status is 'Available'
-  if (asset.status !== 'Available') {
+  if (asset.status !== ASSET_STATUS.AVAILABLE) {
     throw new ApiError(
       400,
-      `Asset cannot be allocated. Current status is '${asset.status}' (must be 'Available').`
+      `Asset cannot be allocated. Current status is '${asset.status}' (must be '${ASSET_STATUS.AVAILABLE}').`
     );
   }
 
@@ -44,7 +45,7 @@ const allocateAsset = async (assetId, userId, expectedReturnDate, operatorId) =>
   }
 
   // Perform allocation updates
-  asset.status = 'Allocated';
+  asset.status = ASSET_STATUS.ALLOCATED;
   asset.currentHolder = userId;
   asset.allocationDate = new Date();
   asset.expectedReturnDate = returnDate;
@@ -55,7 +56,7 @@ const allocateAsset = async (assetId, userId, expectedReturnDate, operatorId) =>
   await Activity.create({
     asset: assetId,
     user: userId,
-    action: 'Allocation',
+    action: ACTIVITY_ACTION.ALLOCATION,
     description: `Asset allocated to ${user.name} (${user.email}). Expected return: ${
       returnDate ? returnDate.toISOString().split('T')[0] : 'N/A'
     }`,
@@ -77,17 +78,17 @@ const returnAsset = async (assetId, operatorId) => {
   }
 
   // Validate asset is currently 'Allocated'
-  if (asset.status !== 'Allocated') {
+  if (asset.status !== ASSET_STATUS.ALLOCATED) {
     throw new ApiError(
       400,
-      `Asset cannot be returned. Current status is '${asset.status}' (must be 'Allocated').`
+      `Asset cannot be returned. Current status is '${asset.status}' (must be '${ASSET_STATUS.ALLOCATED}').`
     );
   }
 
   const previousHolderId = asset.currentHolder;
 
   // Perform return updates
-  asset.status = 'Available';
+  asset.status = ASSET_STATUS.AVAILABLE;
   asset.currentHolder = null;
   asset.allocationDate = null;
   asset.expectedReturnDate = null;
@@ -99,7 +100,7 @@ const returnAsset = async (assetId, operatorId) => {
   await Activity.create({
     asset: assetId,
     user: previousHolderId || operatorId,
-    action: 'Return',
+    action: ACTIVITY_ACTION.RETURN,
     description: 'Asset returned and marked as Available',
   });
 
@@ -115,6 +116,9 @@ const getDashboardStats = async () => {
   // MongoDB Facet Aggregation to count status elements and overdue allocations in one query
   const statsAggregation = await Asset.aggregate([
     {
+      $match: { isDeleted: { $ne: true } }
+    },
+    {
       $facet: {
         total: [{ $count: 'count' }],
         statusCounts: [
@@ -128,7 +132,7 @@ const getDashboardStats = async () => {
         overdue: [
           {
             $match: {
-              status: 'Allocated',
+              status: ASSET_STATUS.ALLOCATED,
               expectedReturnDate: { $lt: now },
             },
           },
@@ -144,10 +148,10 @@ const getDashboardStats = async () => {
   const totalAssets = rawStats.total?.[0]?.count || 0;
   
   const statusCounts = rawStats.statusCounts || [];
-  const availableAssets = statusCounts.find((s) => s._id === 'Available')?.count || 0;
-  const allocatedAssets = statusCounts.find((s) => s._id === 'Allocated')?.count || 0;
-  const underMaintenance = statusCounts.find((s) => s._id === 'Under Maintenance')?.count || 0;
-  const pendingTransfers = statusCounts.find((s) => s._id === 'Pending Transfer')?.count || 0;
+  const availableAssets = statusCounts.find((s) => s._id === ASSET_STATUS.AVAILABLE)?.count || 0;
+  const allocatedAssets = statusCounts.find((s) => s._id === ASSET_STATUS.ALLOCATED)?.count || 0;
+  const underMaintenance = statusCounts.find((s) => s._id === ASSET_STATUS.MAINTENANCE)?.count || 0;
+  const pendingTransfers = statusCounts.find((s) => s._id === ASSET_STATUS.PENDING_TRANSFER)?.count || 0;
 
   const overdueReturns = rawStats.overdue?.[0]?.count || 0;
 
