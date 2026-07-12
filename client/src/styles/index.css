@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: var(--color-indigo-50);
+  --color-primary-100: var(--color-indigo-100);
+  --color-primary-500: var(--color-indigo-500);
+  --color-primary-600: var(--color-indigo-600);
+  --color-primary-700: var(--color-indigo-700);
+
+  /* Primary sidebar, background, and alerts */
+  --color-sidebar: var(--color-slate-900);
+  --color-background: var(--color-slate-50);
+
+  --color-success: var(--color-emerald-500);
+  --color-warning: var(--color-amber-500);
+  --color-danger: var(--color-red-500);
+  --color-maintenance: var(--color-orange-500);
+}
+
+/* Custom Base Styles */
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased font-sans;
+  }
+}
+
+/* Custom Utility Classes for Reusable Patterns */
+@utility btn-primary {
+  @apply px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-sm font-semibold rounded-lg shadow-sm shadow-indigo-600/10 hover:shadow-indigo-600/25 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+}
+
+@utility btn-secondary {
+  @apply px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+}
+
+@utility btn-danger {
+  @apply px-4 py-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-sm font-semibold rounded-lg shadow-sm shadow-red-600/10 hover:shadow-red-600/25 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+}
+
+@utility card {
+  @apply bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200;
+}
+
+@utility input-field {
+  @apply w-full px-3.5 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-sm focus:shadow;
+}
+
+@utility badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold tracking-wide uppercase border;
+}
+
+@utility badge-success {
+  @apply badge bg-emerald-50 text-emerald-700 border-emerald-200;
+}
+
+@utility badge-warning {
+  @apply badge bg-amber-50 text-amber-700 border-amber-200;
+}
+
+@utility badge-danger {
+  @apply badge bg-red-50 text-red-700 border-red-200;
+}
+
+@utility badge-maintenance {
+  @apply badge bg-orange-50 text-orange-700 border-orange-200;
+}
+
+@utility badge-info {
+  @apply badge bg-indigo-50 text-indigo-700 border-indigo-200;
+}
+
+@utility data-table {
+  @apply min-w-full divide-y divide-slate-200 text-left text-sm text-slate-600;
+}
+
+@utility page-title {
+  @apply text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl;
+}
+
+@utility page-subtitle {
+  @apply mt-1 text-sm text-slate-500;
+}
