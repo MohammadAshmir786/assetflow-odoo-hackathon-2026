@@ -34,7 +34,7 @@ export const Transfers = () => {
   const submitting = useAppSelector(selectTransfersSubmitting);
   const actionLoadingId = useAppSelector(selectTransfersActionLoadingId);
   const error = useAppSelector(selectTransfersError);
-  const filter = useAppSelector(selectTransferFilter);
+  const filter = useAppSelector(selectTransfersFilter);
   const assets = useAppSelector(selectAllAssets);
   const currentUser = useAppSelector(selectCurrentUser);
 
