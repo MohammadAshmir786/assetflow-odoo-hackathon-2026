@@ -14,6 +14,16 @@ const EMPTY_FORM = {
   condition: '', location: '', acquisitionDate: '', acquisitionCost: '',
 };
 
+const Field = ({ label, id, error, required, children }) => (
+  <div>
+    <label htmlFor={id} className="text-xs font-semibold text-slate-600 uppercase tracking-wider block mb-1.5">
+      {label} {required && <span className="text-red-500">*</span>}
+    </label>
+    {children}
+    {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+  </div>
+);
+
 function buildInitial(asset) {
   if (!asset) return EMPTY_FORM;
   return {
@@ -107,16 +117,6 @@ export const AssetForm = ({ asset, onClose, onSuccess }) => {
     ? (typeof submitError === 'string' ? submitError : submitError?.message)
     : null;
   const isDuplicate = submitError?.status === 409;
-
-  const Field = ({ label, id, error, required, children }) => (
-    <div>
-      <label htmlFor={id} className="text-xs font-semibold text-slate-600 uppercase tracking-wider block mb-1.5">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
-      {children}
-      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
-    </div>
-  );
 
   return (
     <div
