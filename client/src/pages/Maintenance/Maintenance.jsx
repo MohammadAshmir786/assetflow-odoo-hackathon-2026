@@ -110,7 +110,7 @@ export const Maintenance = () => {
     }
 
     const payload = {
-      assetId: selectedAssetId,
+      asset: selectedAssetId,
       issueDescription: issueDescription.trim(),
       priority,
     };

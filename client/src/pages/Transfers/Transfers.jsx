@@ -134,9 +134,9 @@ export const Transfers = () => {
     }
 
     const payload = {
-      assetId: selectedAssetId,
-      targetEmployeeId,
-      ...(reason.trim() ? { reason: reason.trim() } : {}),
+      asset: selectedAssetId,
+      targetUser: targetEmployeeId,
+      ...(reason.trim() ? { comments: reason.trim() } : {}),
     };
 
     const result = await dispatch(createTransfer(payload));

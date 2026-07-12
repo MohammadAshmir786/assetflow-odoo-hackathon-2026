@@ -7,7 +7,7 @@ import { FiX, FiSave } from 'react-icons/fi';
 import gsap from 'gsap';
 
 const CATEGORIES = ['Hardware', 'Software', 'Furniture', 'Networking', 'Vehicle', 'Other'];
-const CONDITIONS = ['New', 'Good', 'Fair', 'Poor', 'Damaged'];
+const CONDITIONS = ['New', 'Good', 'Fair', 'Poor', 'Broken'];
 
 const EMPTY_FORM = {
   name: '', category: '', assetTag: '', serialNumber: '',

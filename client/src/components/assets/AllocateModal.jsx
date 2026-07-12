@@ -62,7 +62,7 @@ export const AllocateModal = ({ asset, onClose, onSuccess, onTransferRequest }) 
     if (!employeeId) return;
     // Centralized request body — easy to adjust for backend changes
     const payload = {
-      employeeId,
+      userId: employeeId,
       ...(expectedReturnDate ? { expectedReturnDate } : {}),
     };
     const result = await dispatch(allocateAsset({ id: asset._id || asset.id, payload }));
