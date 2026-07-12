@@ -11,6 +11,8 @@ import { Assets } from './pages/Assets/Assets';
 import { Transfers } from './pages/Transfers/Transfers';
 import { Maintenance } from './pages/Maintenance/Maintenance';
 
+import ToastContainer from './components/common/ToastContainer';
+
 function App() {
   const dispatch = useAppDispatch();
 
@@ -40,6 +42,7 @@ function App() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   );
 }
